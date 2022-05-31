@@ -32,6 +32,15 @@ func TestShamirSplitInvalidArgs(t *testing.T) {
 	require.NotNil(t, err)
 }
 
+func TestShamirShareMarshalString(t *testing.T) {
+	curve := curves.ED25519()
+	scheme, err := NewShamir(2, 3, curve)
+	require.Nil(t, err)
+	require.NotNil(t, scheme)
+	_, err = scheme.Combine()
+	require.NotNil(t, err)
+}
+
 func TestShamirCombineNoShares(t *testing.T) {
 	curve := curves.ED25519()
 	scheme, err := NewShamir(2, 3, curve)

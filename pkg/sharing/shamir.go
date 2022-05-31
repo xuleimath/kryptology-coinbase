@@ -44,6 +44,10 @@ func (ss ShamirShare) Bytes() []byte {
 	return append(id[:], ss.Value...)
 }
 
+func (ss ShamirShare) String() string {
+	return string(ss.Bytes())
+}
+
 type Shamir struct {
 	threshold, limit uint32
 	curve            *curves.Curve
@@ -138,9 +142,11 @@ func (s Shamir) Combine(shares ...*ShamirShare) (curves.Scalar, error) {
 	return s.interpolate(xs, ys)
 }
 
+/*
 func WSCombine(s string, shares ...string) (string, error) {
 
 }
+*/
 
 func (s Shamir) CombinePoints(shares ...*ShamirShare) (curves.Point, error) {
 	if len(shares) < int(s.threshold) {
