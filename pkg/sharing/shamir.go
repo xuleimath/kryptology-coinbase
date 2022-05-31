@@ -48,6 +48,16 @@ func (ss ShamirShare) String() string {
 	return string(ss.Bytes())
 }
 
+func String2ShamireShare(s string) ShamirShare {
+	var ss ShamirShare
+
+	b := byte[](s)
+
+	ss.Id = b(1:4)
+	
+	return ss
+}
+
 type Shamir struct {
 	threshold, limit uint32
 	curve            *curves.Curve
