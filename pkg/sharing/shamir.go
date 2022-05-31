@@ -138,6 +138,10 @@ func (s Shamir) Combine(shares ...*ShamirShare) (curves.Scalar, error) {
 	return s.interpolate(xs, ys)
 }
 
+func WSCombine(s string, shares ...string) (string, error) {
+
+}
+
 func (s Shamir) CombinePoints(shares ...*ShamirShare) (curves.Point, error) {
 	if len(shares) < int(s.threshold) {
 		return nil, fmt.Errorf("invalid number of shares")
