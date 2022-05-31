@@ -51,10 +51,11 @@ func (ss ShamirShare) String() string {
 func String2ShamireShare(s string) ShamirShare {
 	var ss ShamirShare
 
-	b := byte[](s)
+	b := []byte(s)
 
-	ss.Id = b(1:4)
-	
+	ss.Id = binary.BigEndian.Uint32(b[1:4])
+	_ = copy(ss.Value, b[5:])
+
 	return ss
 }
 

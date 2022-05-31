@@ -32,13 +32,28 @@ func TestShamirSplitInvalidArgs(t *testing.T) {
 	require.NotNil(t, err)
 }
 
-func TestShamirShareMarshalString(t *testing.T) {
+func TestShamirShareConvString(t *testing.T) {
 	curve := curves.ED25519()
 	scheme, err := NewShamir(2, 3, curve)
 	require.Nil(t, err)
 	require.NotNil(t, scheme)
-	_, err = scheme.Combine()
-	require.NotNil(t, err)
+	shares := []*ShamirShare{
+		{
+			Id:    0,
+			Value: curve.NewScalar().New(3).Bytes(),
+		},
+		{
+			Id:    2,
+			Value: curve.NewScalar().New(4).Bytes(),
+		},
+	}
+
+	s1 := shares[0].String()
+	s2 := shares[1].String()
+
+	if s1 != s2 {
+		t.Errorf(s1)
+	}
 }
 
 func TestShamirCombineNoShares(t *testing.T) {
