@@ -66,7 +66,7 @@ func TestShamirShareEqual(t *testing.T) {
 	*/
 }
 
-func TestShamirShareString(t *testing.T) {
+func TestShamirShare2String(t *testing.T) {
 	curve := curves.ED25519()
 
 	shares := []ShamirShare{
@@ -83,15 +83,11 @@ func TestShamirShareString(t *testing.T) {
 	s1 := shares[0].String()
 	s2 := shares[1].String()
 
-	ss1 := String2ShamireShare(s1)
-	ss2 := String2ShamireShare(s2)
+	//ss1 := String2ShamireShare(s1)
+	//ss2 := String2ShamireShare(s2)
 
-	if EqualShares(shares[0], ss1) {
-		t.Error("Error")
-	}
-
-	if EqualShares(shares[1], ss2) {
-		t.Error("Error")
+	if s1 != s2 {
+		t.Error("S1 and S2 should equal")
 	}
 
 }

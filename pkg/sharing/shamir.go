@@ -45,6 +45,12 @@ func (ss ShamirShare) Bytes() []byte {
 	return append(id[:], ss.Value...)
 }
 
+func (ss ShamirShare) BytesLen() int {
+	b := ss.Bytes()
+
+	return len(b)
+}
+
 func EqualShares(ss1, ss2 ShamirShare) bool {
 	if ss1.Id != ss2.Id {
 		return false
