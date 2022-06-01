@@ -79,11 +79,11 @@ func TestShamirShare2String(t *testing.T) {
 	ss11 := String2ShamireShare(s1)
 	ss12 := String2ShamireShare(s2)
 
-	if EqualShares(ss01, ss11) {
+	if !EqualShares(ss01, ss11) {
 		t.Error("Error")
 	}
 
-	if EqualShares(ss02, ss12) {
+	if !EqualShares(ss02, ss12) {
 		t.Error("Error")
 	}
 
