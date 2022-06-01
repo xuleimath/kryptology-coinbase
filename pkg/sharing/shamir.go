@@ -53,22 +53,6 @@ func EqualShares(ss1, ss2 ShamirShare) bool {
 		return false
 	}
 
-	/*
-		l1 := len(ss1.Value)
-		l2 := len(ss2.Value)
-
-		if l1 != l2 {
-			return false
-		}
-
-		for i := 1; i < l1; i++ {
-			if ss1.Value[i] != ss2.Value[i] {
-				return false
-			}
-		}
-
-		return true
-	*/
 	return bytes.Equal(ss1.Value, ss2.Value)
 }
 
