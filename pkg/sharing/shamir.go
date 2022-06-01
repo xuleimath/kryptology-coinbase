@@ -18,9 +18,25 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/big"
 
 	"github.com/coinbase/kryptology/pkg/core/curves"
 )
+
+func Scalar2String(k curves.Scalar) string {
+	return k.BigInt().String()
+}
+
+func String2Secp256k1Scalar(s string) curves.Scalar {
+	kn := new(big.Int)
+
+	kn, _ = k.SetString(s, 10)
+
+	curve := curves.ED25519()
+	k, _ := curve.NewScalar().SetBigInt(kn)
+
+	return k
+}
 
 type ShamirShare struct {
 	Id    uint32 `json:"identifier"`
