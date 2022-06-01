@@ -32,28 +32,38 @@ func TestShamirSplitInvalidArgs(t *testing.T) {
 	require.NotNil(t, err)
 }
 
-func TestShamirShareConvString(t *testing.T) {
+func TestShamirShareEqual(t *testing.T) {
 	curve := curves.ED25519()
-	scheme, err := NewShamir(2, 3, curve)
-	require.Nil(t, err)
-	require.NotNil(t, scheme)
-	shares := []*ShamirShare{
+
+	shares := []ShamirShare{
 		{
 			Id:    0,
-			Value: curve.NewScalar().New(3).Bytes(),
+			Value: curve.NewScalar().New(40).Bytes(),
 		},
 		{
 			Id:    2,
-			Value: curve.NewScalar().New(4).Bytes(),
+			Value: curve.NewScalar().New(40).Bytes(),
 		},
 	}
 
-	s1 := shares[0].String()
-	s2 := shares[1].String()
-
-	if s1 != s2 {
-		t.Errorf(s1)
+	if EqualShares(shares[0], shares[1]) {
+		t.Errorf("Error")
 	}
+	/*
+		s1 := shares[0].String()
+		s2 := shares[1].String()
+
+		ss1 := String2ShamireShare(s1)
+		ss2 := String2ShamireShare(s2)
+
+		if shares[0].Id != ss1.Id {
+			t.Error("First share is not correctly reconstructed")
+		}
+
+		if shares[1].Id != ss2.Id {
+			t.Error("Second share is not correctly reconstructed")
+		}
+	*/
 }
 
 func TestShamirCombineNoShares(t *testing.T) {

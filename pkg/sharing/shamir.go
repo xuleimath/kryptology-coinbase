@@ -12,6 +12,7 @@
 package sharing
 
 import (
+	"bytes"
 	"encoding/binary"
 	"fmt"
 	"io"
@@ -44,8 +45,19 @@ func (ss ShamirShare) Bytes() []byte {
 	return append(id[:], ss.Value...)
 }
 
+func EqualShares(ss1, ss2 ShamirShare) bool {
+	if ss1.Id != ss2.Id {
+		return false
+	}
+	r := bytes.Compare(ss1.Bytes(), ss2.Bytes())
+
+	return r == 0
+}
+
 func (ss ShamirShare) String() string {
-	return string(ss.Bytes())
+	s := string(ss.Bytes()[:])
+
+	return s
 }
 
 func String2ShamireShare(s string) ShamirShare {
@@ -53,8 +65,8 @@ func String2ShamireShare(s string) ShamirShare {
 
 	b := []byte(s)
 
-	ss.Id = binary.BigEndian.Uint32(b[1:4])
-	_ = copy(ss.Value, b[5:])
+	ss.Id = binary.BigEndian.Uint32(b[0:3])
+	_ = copy(ss.Value, b[4:])
 
 	return ss
 }
