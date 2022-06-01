@@ -13,7 +13,9 @@ package sharing
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/binary"
+	"encoding/json"
 	"fmt"
 	"io"
 
@@ -45,28 +47,40 @@ func (ss ShamirShare) Bytes() []byte {
 	return append(id[:], ss.Value...)
 }
 
+// Returns true if two shares are equal
 func EqualShares(ss1, ss2 ShamirShare) bool {
 	if ss1.Id != ss2.Id {
 		return false
 	}
-	r := bytes.Compare(ss1.Bytes(), ss2.Bytes())
+	r := bytes.Equal(ss1.Bytes(), ss2.Bytes())
 
-	return r == 0
+	return r
 }
 
 func (ss ShamirShare) String() string {
-	s := string(ss.Bytes()[:])
+	json_bytes, err := json.Marshal(ss)
 
-	return s
+	if err != nil {
+		panic("Converting to json fails")
+	}
+
+	return base64.StdEncoding.EncodeToString(json_bytes)
 }
 
 func String2ShamireShare(s string) ShamirShare {
 	var ss ShamirShare
 
-	b := []byte(s)
+	b, err := base64.StdEncoding.DecodeString(s)
 
-	ss.Id = binary.BigEndian.Uint32(b[0:3])
-	_ = copy(ss.Value, b[4:])
+	if err != nil {
+		panic("Reconverting from string to binary fails")
+	}
+
+	err = json.Unmarshal(b, &ss)
+
+	if err != nil {
+		panic("Reconverting from json fails")
+	}
 
 	return ss
 }

@@ -69,25 +69,22 @@ func TestShamirShareEqual(t *testing.T) {
 func TestShamirShare2String(t *testing.T) {
 	curve := curves.ED25519()
 
-	shares := []ShamirShare{
-		{
-			Id:    0,
-			Value: curve.NewScalar().New(40).Bytes(),
-		},
-		{
-			Id:    2,
-			Value: curve.NewScalar().New(40).Bytes(),
-		},
+	ss01 := ShamirShare{0, curve.NewScalar().New(40).Bytes()}
+
+	ss02 := ShamirShare{2, curve.NewScalar().New(99).Bytes()}
+
+	s1 := ss01.String()
+	s2 := ss02.String()
+
+	ss11 := String2ShamireShare(s1)
+	ss12 := String2ShamireShare(s2)
+
+	if EqualShares(ss01, ss11) {
+		t.Error("Error")
 	}
 
-	s1 := shares[0].String()
-	s2 := shares[1].String()
-
-	//ss1 := String2ShamireShare(s1)
-	//ss2 := String2ShamireShare(s2)
-
-	if s1 != s2 {
-		t.Error("S1 and S2 should equal")
+	if EqualShares(ss02, ss12) {
+		t.Error("Error")
 	}
 
 }
