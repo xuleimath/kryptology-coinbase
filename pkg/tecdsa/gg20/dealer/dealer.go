@@ -147,6 +147,7 @@ func (s *Share) Base64String() string {
 
 // In the 2-out-of-3 setting, recover the private key
 // ss1 and ss2 are Shares, which are strings produced by Share.Base64String()
+// The returned result is a string which is encoded from a byte slice
 func MobileCombine(ss1 string, ss2 string) string {
 
 	var s1, s2 Share
@@ -157,11 +158,11 @@ func MobileCombine(ss1 string, ss2 string) string {
 	s1.UnmarshalJSON(bss1)
 	s2.UnmarshalJSON(bss2)
 
-	curve := curves.ED25519()
-	scheme, _ := v1.NewShamir(2, 3, curve)
+	scheme, _ := v1.NewShamir(2, 3, curves.NewField(s1.Point.Curve.Params().N))
 
 	k, _ := scheme.Combine(s1.ShamirShare, s2.ShamirShare)
 
+	return base64.StdEncoding.EncodeToString(k)
 }
 
 // NewProofParams creates new ProofParams with `bits` sized values
