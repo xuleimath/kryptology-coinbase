@@ -149,8 +149,18 @@ func (s *Share) Base64String() string {
 // ss1 and ss2 are Shares, which are strings produced by Share.Base64String()
 func MobileCombine(ss1 string, ss2 string) string {
 
+	var s1, s2 Share
+
 	bss1, _ := base64.StdEncoding.DecodeString(ss1)
 	bss2, _ := base64.StdEncoding.DecodeString(ss2)
+
+	s1.UnmarshalJSON(bss1)
+	s2.UnmarshalJSON(bss2)
+
+	curve := curves.ED25519()
+	scheme, err := v1.NewShamir(2, 3, curve)
+
+	k, _ := scheme.Combine(s1.ShamirShare, s2.ShamirShare)
 
 }
 
