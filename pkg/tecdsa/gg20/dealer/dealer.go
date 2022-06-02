@@ -158,7 +158,7 @@ func MobileCombine(ss1 string, ss2 string) string {
 	s2.UnmarshalJSON(bss2)
 
 	curve := curves.ED25519()
-	scheme, err := v1.NewShamir(2, 3, curve)
+	scheme, _ := v1.NewShamir(2, 3, curve)
 
 	k, _ := scheme.Combine(s1.ShamirShare, s2.ShamirShare)
 
