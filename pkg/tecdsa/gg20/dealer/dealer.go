@@ -9,6 +9,7 @@ package dealer
 
 import (
 	"crypto/elliptic"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"math/big"
@@ -16,7 +17,7 @@ import (
 	"github.com/coinbase/kryptology/pkg/core"
 	"github.com/coinbase/kryptology/pkg/core/curves"
 	"github.com/coinbase/kryptology/pkg/paillier"
-	"github.com/coinbase/kryptology/pkg/sharing/v1"
+	v1 "github.com/coinbase/kryptology/pkg/sharing/v1"
 )
 
 // ParticipantData represents all data to be sent to a participant
@@ -135,6 +136,22 @@ func (s *Share) UnmarshalJSON(bytes []byte) error {
 	s.ShamirShare.Value = f.NewElement(sh.Value)
 	s.Point = sh.Point
 	return nil
+}
+
+// Convert the Share s to a string
+func (s *Share) Base64String() string {
+	bs, _ := s.MarshalJSON()
+
+	return base64.StdEncoding.EncodeToString(bs)
+}
+
+// In the 2-out-of-3 setting, recover the private key
+// ss1 and ss2 are Shares, which are strings produced by Share.Base64String()
+func MobileCombine(ss1 string, ss2 string) string {
+
+	bss1, _ := base64.StdEncoding.DecodeString(ss1)
+	bss2, _ := base64.StdEncoding.DecodeString(ss2)
+
 }
 
 // NewProofParams creates new ProofParams with `bits` sized values
