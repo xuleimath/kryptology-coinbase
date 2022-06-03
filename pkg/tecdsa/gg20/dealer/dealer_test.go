@@ -7,6 +7,8 @@
 package dealer
 
 import (
+	"bytes"
+	"encoding/base64"
 	"fmt"
 	"math/big"
 	"testing"
@@ -299,6 +301,40 @@ func TestPreparePublicShares(t *testing.T) {
 	}
 }
 
+func TestShare2String(t *testing.T) {
+	curve := btcec.S256()
+
+	var ikm *big.Int
+
+	_, sharesMap, _ := NewDealerShares(curve, 2, 3, ikm)
+
+	s1_str := sharesMap[3].Base64String()
+	s1_bytes, err := base64.StdEncoding.DecodeString(s1_str)
+
+	if err != nil {
+		t.Error("Failed to decode the string to bytes array")
+	}
+
+	s1_ori_bytes, _ := sharesMap[3].MarshalJSON()
+	if !bytes.Equal(s1_bytes, s1_ori_bytes) {
+		t.Error("Something wrong in conversions")
+	}
+}
+
 func TestCombine(t *testing.T) {
+	curve := btcec.S256()
+
+	var ikm *big.Int
+	ikm, _ = NewSecret(curve)
+
+	_, sharesMap, _ := NewDealerShares(curve, 2, 3, ikm)
+
+	newikm_str := MobileCombine(sharesMap[3].Base64String(), sharesMap[2].Base64String())
+
+	ikm_str := base64.StdEncoding.EncodeToString(ikm.Bytes())
+
+	if newikm_str != ikm_str {
+		t.Error("Something wrong")
+	}
 
 }

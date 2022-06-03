@@ -160,9 +160,11 @@ func MobileCombine(ss1 string, ss2 string) string {
 
 	scheme, _ := v1.NewShamir(2, 3, curves.NewField(s1.Point.Curve.Params().N))
 
-	k, _ := scheme.Combine(s1.ShamirShare, s2.ShamirShare)
+	// k_bytes is the bytes array representation of the big integer
+	k_bytes, _ := scheme.Combine(s1.ShamirShare, s2.ShamirShare)
 
-	return base64.StdEncoding.EncodeToString(k)
+	// The returned value is the base64 encoding of the big integer byte array to string
+	return base64.StdEncoding.EncodeToString(k_bytes)
 }
 
 // NewProofParams creates new ProofParams with `bits` sized values
