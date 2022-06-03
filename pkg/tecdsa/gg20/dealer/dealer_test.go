@@ -298,3 +298,7 @@ func TestPreparePublicShares(t *testing.T) {
 		require.Equal(t, publicShares[i].Point.Y, sharesMap[i].Point.Y)
 	}
 }
+
+func TestCombine(t *testing.T) {
+
+}
